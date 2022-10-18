@@ -20,22 +20,33 @@ def factory_assignment(S,C):
     for Sk,Ck in zip(S,C):
         c.append(Sk-Ck)
 
-    c=np.array(c)  #need nd array to run transpose
+    c=np.array(c)  # nd array to run transpose .T
 
     # Define and solve the CVXPY problem.
-    x = cp.Variable(n,nonneg=True)  #constarint: x1 , x2 , x3 => 0
+    x = cp.Variable(n,integer=True)  # so that x1 , x2 , x3 are not defaulted to be continuous
+
+
+    # list of 2 constraints :
+    constraints = [A @ x <= b, x >= 0]
+    # 0: x1*C1 + x2*C2 + x3*C3 <= 3,000,000.
+    # 1: xk => 0
+
+
     prob = cp.Problem(cp.Maximize(c.T@x),
-                      [A @ x <= b]) #constraint: x1*C1 + x2*C2 + x3*C3 <= 3,000,000.
+                      constraints)
     prob.solve()
 
     # Print result.
     print("\nThe optimal objective function value is:", prob.value)
-    print("\nA solution x , the optimizer x*")
+    print("\nThe optimizer x*")
     print(x.value)
     print("##########################################################")
 
 def main():
+    #Use the following values: S1 = 100, S2 = 200, S3 = 300, C1 = 50, C2 = 55, C3 = 75.
     factory_assignment([100,200,300],[50,55,75])  #parameters 1  [S1,S2,S3],[C1,C2,C3]
+
+    #Solve the problem a second time, but with parameter values S1 = 50, S2 = 201, S3 = 200, C1 = 52.4, C2 = 55, C3 = 75.
     factory_assignment([50,201,200],[52.4,55,75]) #parameters 2  [S1,S2,S3],[C1,C2,C3]
 
 
