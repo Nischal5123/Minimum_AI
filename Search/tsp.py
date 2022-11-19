@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import sys
 
 
 # implementation of greedy
@@ -22,6 +23,7 @@ def get_nearest_city(M, very_next_cities, current_city):
 
 # i) Re-start of greedy is correct (including choice of next city)
 def random_backtrack(visited_cities, running_tour):
+
     """
     random_backtrack does a random backtrack to a previous city
 
@@ -230,6 +232,7 @@ def check_if_no_tour_exists(M):
 
 
 def tsp(M, K):
+
     """
     run tsp
      :param M: matrix of cities
@@ -240,6 +243,7 @@ def tsp(M, K):
     # e) Just in case your algorithm gets a matrix M that does not contain any t
     # #ours (e.g., it is not possible to come back to the starting city 1), it's a good idea to be able to detect that and output some message like
     # "This matrix does not contain any tours" before you attempt to find non-existent tours. How do you detect that?
+
     if (
         check_if_no_tour_exists(M)
         or check_if_unvisitable_city(M)
@@ -268,6 +272,6 @@ def tsp(M, K):
 
 if __name__ == "__main__":
 
-    M = [[-1, 10, 15], [-15, -1, -1], [-20, 25, -1]]
-    K = 20
+    M = [[-1, 1, -1, 2, -1], [1, -1, 4, 1, 8], [-1, 4, -1, 10, 5], [2, 1, 10, -1, 100], [-1, 8, 5, 100, -1]]
+    K = 1000
     print(tsp(M, K))
